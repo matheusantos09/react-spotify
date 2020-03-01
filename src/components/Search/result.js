@@ -3,9 +3,7 @@ import styled from "styled-components"
 
 import ListLoader from './list-loader'
 import {useDispatch, useSelector} from "react-redux";
-import apiSpotify from "../../services/api";
-import {toast} from "react-toastify";
-import {showResult} from "../../store/ducks/search";
+import {Creators as CreatorsSearch} from "../../store/ducks/search";
 
 const Container = styled.div`
     background-color: white;
@@ -114,61 +112,15 @@ const Result = () => {
   }
 
   const handlePlayMusic = (uri, trackNumber) => {
-    apiSpotify.put('/me/player/play', {
-      context_uri: uri,
-      offset: {
-        position: trackNumber - 1
-      }
-    })
-      .then(response => {
-        toast.success('Reproduzindo a música', {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        })
-      })
-      .catch(err => {
-        console.log(err)
-        toast.error('Não foi possível reproduzir a música', {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        })
-      })
+    dispatch(CreatorsSearch.playMusic(uri, trackNumber))
   }
 
   const handleQueueMusic = (uri) => {
-    apiSpotify.post('/me/player/add-to-queue?uri=' + uri)
-      .then(response => {
-        toast.success('Música adicionada a sua fila de reprodução', {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        })
-      })
-      .catch(err => {
-        toast.error('Não foi possível adicionar a música', {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        })
-      })
+    dispatch(CreatorsSearch.addMusicQueue(uri))
   }
 
   const handleCloseList = () => {
-    dispatch(showResult(false))
+    dispatch(CreatorsSearch.showResult(false))
   }
 
   return (
@@ -193,7 +145,10 @@ const Result = () => {
                       <div>
                         <BoxActions>
                           <ButtonPlay
-                            onClick={() => handlePlayMusic(item.album.uri, item.track_number)}>Tocar</ButtonPlay>
+                            onClick={() => handlePlayMusic(item.album.uri, item.track_number)}
+                          >
+                            Tocar
+                          </ButtonPlay>
                           <ButtonQueue onClick={() => handleQueueMusic(item.uri)}>Adcionar na fila</ButtonQueue>
                         </BoxActions>
                       </div>

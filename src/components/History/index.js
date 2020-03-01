@@ -1,8 +1,7 @@
 import React, {useEffect} from "react";
 import styled from "styled-components";
-import apiSpotify from "../../services/api";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchHistoryError, fetchHistorySuccess} from "../../store/ducks/history";
+import {Creators as CreatorsHistory} from "../../store/ducks/history";
 
 const Container = styled.section`
   
@@ -48,13 +47,7 @@ const History = () => {
 
   useEffect(() => {
 
-    apiSpotify.get('/me/player/recently-played?limit=10')
-      .then(response => {
-        dispatch(fetchHistorySuccess(response.data.items))
-      })
-      .catch((err) => {
-        dispatch(fetchHistoryError())
-      })
+    dispatch(CreatorsHistory.fetchHistorySaga())
 
   }, []);
 

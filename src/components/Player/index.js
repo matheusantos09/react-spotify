@@ -3,10 +3,9 @@ import styled from "styled-components"
 import ContentLoader from "react-content-loader"
 
 import ProgressBarPlayer from "./progress-bar";
-import apiSpotify from "../../services/api";
-import {fetchPlayerError, fetchPlayerSuccess} from "../../store/ducks/player";
+import {Creators as CreatorsPlayer} from "../../store/ducks/player";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchHistoryError, fetchHistorySuccess} from "../../store/ducks/history";
+import {Creators as CreatorsHistory} from "../../store/ducks/history";
 
 const Container = styled.div`
   max-width: 600px;
@@ -38,7 +37,6 @@ const Image = styled.img`
 
 const Player = () => {
 
-  // const [item, setItem] = useState({});
   const dispatch = useDispatch();
   const music = useSelector(
     state => state.player.music
@@ -46,16 +44,9 @@ const Player = () => {
 
   useEffect(() => {
 
-    const IntervalFetch = setInterval(async () => {
+    const IntervalFetch = setInterval(/*async*/ () => {
 
-      await apiSpotify.get('/me/player')
-        .then((response) => {
-          dispatch(fetchPlayerSuccess(response.data))
-        })
-        .catch((err) => {
-          clearTimeout(IntervalFetch)
-          dispatch(fetchPlayerError())
-        })
+      dispatch(CreatorsPlayer.fetchMusicSaga())
 
     }, 800);
 
@@ -73,26 +64,20 @@ const Player = () => {
 
   let progressBarStyles = '';
 
-  if (!isEmpty(music)) {
+  if (!isEmpty(music) && music.item) {
     progressBarStyles = (music.progress_ms * 100 / music.item.duration_ms)
   }
 
   let progressValue = Math.round(progressBarStyles);
 
   if (progressValue === 2) {
-    apiSpotify.get('/me/player/recently-played?limit=10')
-      .then(response => {
-        dispatch(fetchHistorySuccess(response.data.items))
-      })
-      .catch((err) => {
-        dispatch(fetchHistoryError())
-      })
+    dispatch(CreatorsHistory.fetchHistorySaga())
   }
 
   return (
     <Container>
       {
-        !isEmpty(music)
+        !isEmpty(music) && music.item
           ? (
             <>
               <Image src={music.item.album.images[0].url} alt={music.item.name} />

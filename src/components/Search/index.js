@@ -6,8 +6,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 
 import Result from './result'
 import {useDispatch} from "react-redux";
-import apiSpotify from "../../services/api";
-import {fetchSearchError, fetchSearchSuccess, showResult} from "../../store/ducks/search";
+import {Creators as CreatorsSearch} from "../../store/ducks/search";
 
 const Container = styled.div`
   margin-bottom: 30px;
@@ -73,14 +72,7 @@ const Search = () => {
       })
     }
 
-    apiSpotify.get(`search?q=${searchWord}&type=track`)
-      .then(response => {
-        dispatch(showResult(true))
-        dispatch(fetchSearchSuccess(response.data.tracks.items))
-      })
-      .catch((err) => {
-        dispatch(fetchSearchError())
-      })
+    dispatch(CreatorsSearch.fetchSearchSaga(searchWord))
   }
 
   return (

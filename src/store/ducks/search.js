@@ -1,43 +1,15 @@
-export const Types = {
-  FETCH_SEARCH: 'search/FETCH',
-  FETCH_SEARCH_SUCCESS: 'search/FETCH_SUCCESS',
-  FETCH_SEARCH_ERROR: 'search/FETCH_ERROR',
-  SHOW_RESULT: 'search/SHOW_RESULT',
-  LOADING: 'search/LOADING',
-}
+import {createActions, createReducer} from "reduxsauce";
 
-export const fetchSearchSuccess = search => {
-  return {
-    type: Types.FETCH_SEARCH_SUCCESS,
-    payload: {
-      search
-    }
-  }
-}
-
-export const fetchSearchError = () => {
-  return {
-    type: Types.FETCH_SEARCH_ERROR
-  }
-}
-
-export const showResult = show => {
-  return {
-    type: Types.SHOW_RESULT,
-    payload: {
-      show
-    }
-  }
-}
-
-export const loading = loading => {
-  return {
-    type: Types.LOADING,
-    payload: {
-      loading
-    }
-  }
-}
+export const {Types, Creators} = createActions({
+  fetchSearch: [],
+  fetchSearchSaga: ['search'],
+  fetchSearchSuccess: ['tracks'],
+  fetchSearchError: [],
+  showResult: ['show'],
+  loading: [],
+  addMusicQueue: ['uri'],
+  playMusic: ['uri', 'trackNumber'],
+})
 
 const INITIAL_STATE = {
   searchResult: [],
@@ -45,30 +17,20 @@ const INITIAL_STATE = {
   loading: false
 }
 
-function reducer(state = INITIAL_STATE, action) {
+const fetchSearchSuccess = (state = INITIAL_STATE, action) => ({
+  ...state,
+  searchResult: action.tracks
+})
 
-  switch (action.type) {
-    case Types.FETCH_SEARCH_SUCCESS:
-      return {
-        ...state,
-        searchResult: action.payload.search
-      }
+const showResult = (state = INITIAL_STATE, action) => ({
+  ...state,
+  showResult: action.show
+})
 
-    case Types.SHOW_RESULT:
-      return {
-        ...state,
-        showResult: action.payload.show
-      }
-
-    case Types.LOADING:
-      return {
-        ...state,
-        loading: action.payload.loading
-      }
-
-    default:
-      return state;
-  }
-}
-
-export default reducer
+export default createReducer(INITIAL_STATE, {
+  [Types.FETCH_SEARCH]: '',
+  [Types.FETCH_SEARCH_SUCCESS]: fetchSearchSuccess,
+  [Types.FETCH_SEARCH_ERROR]: '',
+  [Types.SHOW_RESULT]: showResult,
+  [Types.LOADING]: '',
+})

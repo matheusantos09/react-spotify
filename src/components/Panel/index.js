@@ -10,7 +10,7 @@ const Container = styled.div`
    margin: 0 auto;
 `
 
-store.subscribe(() => console.log(store.getState()))
+// store.subscribe(() => console.log(store.getState()))
 
 const Panel = () => {
 

@@ -1,35 +1,18 @@
-export const Types = {
-  FETCH_HISTORY: 'history/ADD',
-  FETCH_HISTORY_SUCCESS: 'history/FETCH_SUCCESS',
-  FETCH_HISTORY_ERROR: 'history/FETCH_ERROR',
-}
+import {createActions, createReducer} from "reduxsauce";
 
-export const fetchHistorySuccess = history => {
-  return {
-    type: Types.FETCH_HISTORY_SUCCESS,
-    payload: {
-      history
-    }
-  }
-}
-
-export const fetchHistoryError = () => {
-  return {
-    type: Types.FETCH_HISTORY_ERROR
-  }
-}
+export const {Types, Creators} = createActions({
+  fetchHistory: [],
+  fetchHistorySaga: [],
+  fetchHistorySuccess: ['history'],
+  fetchHistoryError: []
+})
 
 const INITIAL_STATE = []
 
-const reducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case Types.FETCH_HISTORY_SUCCESS:
-      return action.payload.history
-
-    default:
-      return state
-
-  }
+const fetchSuccess = (state = INITIAL_STATE, action) => {
+  return action.history.items
 }
 
-export default reducer
+export default createReducer(INITIAL_STATE, {
+  [Types.FETCH_HISTORY_SUCCESS]: fetchSuccess,
+})
