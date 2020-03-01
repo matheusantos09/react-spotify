@@ -1,18 +1,18 @@
 export const accessTokenSpotify = (changeUrl = "") => {
-    let hash = window.location.hash
-        .substring(1)
-        .split("&")
-        .reduce(function (initial, item) {
+  let hash = window.location.hash
+    .substring(1)
+    .split("&")
+    .reduce(function (initial, item) {
 
-            if (item) {
-                let parts = item.split("=");
-                initial[parts[0]] = decodeURIComponent(parts[1]);
-            }
+      if (item) {
+        let parts = item.split("=");
+        initial[parts[0]] = decodeURIComponent(parts[1]);
+      }
 
-            return initial;
-        }, {});
+      return initial;
+    }, {});
 
-    // window.location.hash = changeUrl;
+  // window.location.hash = changeUrl;
 
-    return hash;
+  return hash;
 }

@@ -10,9 +10,9 @@ const Container = styled.header`
 `;
 
 const Header = () => (
-    <Container>
-        ReactFy
-    </Container>
+  <Container>
+    ReactFy
+  </Container>
 )
 
 export default Header

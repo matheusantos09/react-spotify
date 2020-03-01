@@ -10,9 +10,9 @@ const Container = styled.footer`
 `
 
 const Footer = () => (
-    <Container>
-        By Matheus
-    </Container>
+  <Container>
+    By Matheus
+  </Container>
 )
 
 export default Footer

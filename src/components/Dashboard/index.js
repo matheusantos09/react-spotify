@@ -7,19 +7,19 @@ import React from "react";
 
 const Dashboard = () => {
 
-    return (
-        <>
-            <Header />
+  return (
+    <>
+      <Header />
 
-            <Search />
+      <Search />
 
-            <Player />
+      <Player />
 
-            <History />
+      <History />
 
-            <Footer />
-        </>
-    )
+      <Footer />
+    </>
+  )
 }
 
 export default Dashboard
