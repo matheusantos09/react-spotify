@@ -14,14 +14,14 @@ const ProgressBar = styled.div`
   transition: .2s ease-out;
   background: #1DB954;
   height: 100%;
-  width: ${props => props.width};
+  width: ${props => `${props.width}%`};
       border-radius: 40px;
 `
 
 const ProgressBarPlayer = ({value}) => (
-    <ProgressBarWrapper>
-        <ProgressBar width={value} />
-    </ProgressBarWrapper>
+  <ProgressBarWrapper>
+    <ProgressBar width={value} />
+  </ProgressBarWrapper>
 )
 
 export default ProgressBarPlayer

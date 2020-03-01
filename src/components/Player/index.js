@@ -6,6 +6,7 @@ import ProgressBarPlayer from "./progress-bar";
 import apiSpotify from "../../services/api";
 import {fetchPlayerError, fetchPlayerSuccess} from "../../store/ducks/player";
 import {useDispatch, useSelector} from "react-redux";
+import {fetchHistoryError, fetchHistorySuccess} from "../../store/ducks/history";
 
 const Container = styled.div`
   max-width: 600px;
@@ -73,7 +74,19 @@ const Player = () => {
   let progressBarStyles = '';
 
   if (!isEmpty(music)) {
-    progressBarStyles = (music.progress_ms * 100 / music.item.duration_ms) + '%'
+    progressBarStyles = (music.progress_ms * 100 / music.item.duration_ms)
+  }
+
+  let progressValue = Math.round(progressBarStyles);
+
+  if (progressValue === 2) {
+    apiSpotify.get('/me/player/recently-played?limit=10')
+      .then(response => {
+        dispatch(fetchHistorySuccess(response.data.items))
+      })
+      .catch((err) => {
+        dispatch(fetchHistoryError())
+      })
   }
 
   return (
