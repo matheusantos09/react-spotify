@@ -5,7 +5,9 @@ import ContentLoader from "react-content-loader"
 import ProgressBarPlayer from "./progress-bar";
 import {Creators as CreatorsPlayer} from "../../store/ducks/player";
 import {useDispatch, useSelector} from "react-redux";
-import {Creators as CreatorsHistory} from "../../store/ducks/history";
+
+import isEmpty from "../../helpers/isEmpty";
+import {SPEED_REQUEST_MUSIC} from "../../config/spotify";
 
 const Container = styled.div`
   max-width: 600px;
@@ -23,9 +25,10 @@ text-align: center;
 `
 
 const Playing = styled.div`
-text-align: center;
-    font-size: 20px;
-    font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
 `
 
 const Image = styled.img`
@@ -37,80 +40,60 @@ const Image = styled.img`
 
 const Player = () => {
 
-  const dispatch = useDispatch();
-  const music = useSelector(
-    state => state.player.music
-  )
+    const dispatch = useDispatch();
+    const music = useSelector(
+        state => state.player.music
+    )
 
-  useEffect(() => {
+    useEffect(() => {
 
-    const IntervalFetch = setInterval(/*async*/ () => {
+        const IntervalFetch = setInterval(/*async*/ () => {
 
-      dispatch(CreatorsPlayer.fetchMusicSaga())
+            dispatch(CreatorsPlayer.fetchMusicSaga())
 
-    }, 800);
+        }, SPEED_REQUEST_MUSIC);
 
-    return () => clearTimeout(IntervalFetch);
+        return () => clearTimeout(IntervalFetch);
 
-  }, []);
+    }, []);
 
-  const isEmpty = (obj) => {
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key))
-        return false;
-    }
-    return true;
-  }
+    return (
+        <Container>
+            {
+                !isEmpty(music) && music.item
+                    ? (
+                        <>
+                            <Image src={music.item.album.images[0].url} alt={music.item.name}/>
 
-  let progressBarStyles = '';
-
-  if (!isEmpty(music) && music.item) {
-    progressBarStyles = (music.progress_ms * 100 / music.item.duration_ms)
-  }
-
-  let progressValue = Math.round(progressBarStyles);
-
-  if (progressValue === 2) {
-    dispatch(CreatorsHistory.fetchHistorySaga())
-  }
-
-  return (
-    <Container>
-      {
-        !isEmpty(music) && music.item
-          ? (
-            <>
-              <Image src={music.item.album.images[0].url} alt={music.item.name} />
-
-              <Data>
-                <MusicArtist>
-                  {music.item.name} - {music.item.artists[0].name}
-                </MusicArtist>
-                <Playing>
-                  {music.is_playing ? "Tocando agora!" : "Pausada"}
-                </Playing>
-                <ProgressBarPlayer value={progressBarStyles} />
-              </Data>
-            </>
-          )
-          : (
-            <ContentLoader
-              speed={2}
-              width={600}
-              height={160}
-              viewBox="0 0 600 160"
-              backgroundColor="#e8e9ff"
-              foregroundColor="#1DB954"
-            >
-              <rect x="173" y="12" rx="3" ry="3" width="410" height="6" />
-              <rect x="177" y="33" rx="3" ry="3" width="380" height="6" />
-              <rect x="177" y="53" rx="3" ry="3" width="178" height="6" />
-              <rect x="2" y="1" rx="0" ry="0" width="160" height="154" />
-            </ContentLoader>
-          )
-      }
-    </Container>
-  )
+                            <Data>
+                                <MusicArtist>
+                                    {music.item.name} - {music.item.artists[0].name}
+                                </MusicArtist>
+                                <Playing>
+                                    {music.is_playing ? "Tocando agora!" : "Pausada"}
+                                </Playing>
+                                <ProgressBarPlayer/>
+                            </Data>
+                        </>
+                    )
+                    : (
+                        <ContentLoader
+                            speed={2}
+                            width={600}
+                            height={160}
+                            viewBox="0 0 600 160"
+                            backgroundColor="#e8e9ff"
+                            foregroundColor="#1DB954"
+                        >
+                            <rect x="173" y="12" rx="3" ry="3" width="410" height="6"/>
+                            <rect x="177" y="33" rx="3" ry="3" width="380" height="6"/>
+                            <rect x="177" y="53" rx="3" ry="3" width="178" height="6"/>
+                            <rect x="2" y="1" rx="0" ry="0" width="160" height="154"/>
+                        </ContentLoader>
+                    )
+            }
+        </Container>
+    )
 }
 
 export default Player

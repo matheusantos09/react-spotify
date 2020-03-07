@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Dashboard from "../Dashboard";
+import PlayerFloat from "../PlayerFloat";
 
 const Container = styled.div`
    max-width: 1140px;
@@ -14,8 +15,9 @@ const Panel = () => {
   return (
     <Container>
       <Dashboard />
+      <PlayerFloat/>
     </Container>
-  );
+  )
 }
 
 export default Panel

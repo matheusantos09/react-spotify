@@ -53,7 +53,7 @@ const History = () => {
 
   return (
     <Container>
-      <h1>Histórico</h1>
+      <h1 style={{marginTop: 30,display: 'block'}}>Histórico</h1>
       <List>
         {
           history.map(item => (

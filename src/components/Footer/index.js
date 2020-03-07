@@ -2,11 +2,11 @@ import React from "react"
 import styled from "styled-components";
 
 const Container = styled.footer`
-    color: #FFF;
+  color: #FFF;
   text-align: center;
   font-weight: bold;
   font-size: 14px;
-  padding: 12px;
+  padding: 12px 12px 120px 12px;
 `
 
 const Footer = () => (
