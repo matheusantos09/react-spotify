@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Dashboard from "../Dashboard";
-import PlayerFloat from "../PlayerFloat";
+import PlayerFloat from "../../components/PlayerFloat";
 
 const Container = styled.div`
    max-width: 1140px;

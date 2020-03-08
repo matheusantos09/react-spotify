@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {useScrollPosition} from "@n8tb1t/use-scroll-position"
 import styled from "styled-components"
 
-import ProgressBarPlayer from "../Player/progress-bar";
+import ProgressBarPlayer from "../ProgressBar";
 import {useSelector} from "react-redux";
 import isEmpty from "../../helpers/isEmpty";
 

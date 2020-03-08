@@ -2,7 +2,7 @@ import React, {useEffect} from "react"
 import styled from "styled-components"
 import ContentLoader from "react-content-loader"
 
-import ProgressBarPlayer from "./progress-bar";
+import ProgressBarPlayer from "../ProgressBar";
 import Constrols from "../Controls";
 import {Creators as CreatorsPlayer} from "../../store/ducks/player";
 import {useDispatch, useSelector} from "react-redux";

@@ -1,9 +1,9 @@
 import React from "react";
 import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
-import Panel from "./components/Panel";
+import Panel from "./pages/Panel";
 import {isAuthenticated, setToken} from "./services/auth";
 import {accessTokenSpotify} from "./helpers/accessTokenSpotify";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 
 const setTokenReceived = () => {
 
