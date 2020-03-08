@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux'
 
 import PropType from 'prop-types'
 import isEmpty from "../../helpers/isEmpty";
-import {Creators as CreatorsHistory} from "../../store/ducks/history";
+import {Creators as CreatorsHistory} from "../../pages/Dashboard/ducks/history";
 
 const ProgressBarWrapper = styled.div`
   border: 1px solid #252525;

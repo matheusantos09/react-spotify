@@ -4,7 +4,7 @@ import ContentLoader from "react-content-loader"
 
 import ProgressBarPlayer from "../ProgressBar";
 import Constrols from "../Controls";
-import {Creators as CreatorsPlayer} from "../../store/ducks/player";
+import {Creators as CreatorsPlayer} from "../../pages/Dashboard/ducks/player";
 import {useDispatch, useSelector} from "react-redux";
 
 import isEmpty from "../../helpers/isEmpty";

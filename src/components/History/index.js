@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
-import {Creators as CreatorsHistory} from "../../store/ducks/history";
+import {Creators as CreatorsHistory} from "../../pages/Dashboard/ducks/history";
 
 const Container = styled.section`
   

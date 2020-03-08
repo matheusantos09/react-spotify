@@ -3,7 +3,7 @@ import {FaPause, FaPlay, FaStepBackward, FaStepForward} from "react-icons/fa";
 
 import styled from "styled-components"
 import {useDispatch, useSelector} from "react-redux";
-import {Creators as CreatorsPlayer} from "../../store/ducks/player";
+import {Creators as CreatorsPlayer} from "../../pages/Dashboard/ducks/player";
 
 const Container = styled.div`
   display: flex;

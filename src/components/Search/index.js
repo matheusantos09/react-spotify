@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 
 import Result from './result'
 import {useDispatch} from "react-redux";
-import {Creators as CreatorsSearch} from "../../store/ducks/search";
+import {Creators as CreatorsSearch} from "../../pages/Dashboard/ducks/search";
 
 const Container = styled.div`
   margin-bottom: 30px;

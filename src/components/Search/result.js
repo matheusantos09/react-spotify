@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 import ListLoader from './list-loader'
 import {useDispatch, useSelector} from "react-redux";
-import {Creators as CreatorsSearch} from "../../store/ducks/search";
+import {Creators as CreatorsSearch} from "../../pages/Dashboard/ducks/search";
 
 const Container = styled.div`
     background-color: white;

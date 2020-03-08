@@ -1,4 +1,4 @@
-import reducers from './ducks'
+import reducers from './reducers'
 import {applyMiddleware, compose, createStore} from "redux";
 import createSaga from 'redux-saga'
 import sagas from '../sagas'
