@@ -2,7 +2,17 @@ import {all, call, put, takeLatest} from 'redux-saga/effects'
 import {Creators as CreatorsPlayer, Types as TypesPlayer} from "../store/ducks/player"
 import {Creators as CreatorsHistory, Types as TypesHistory} from "../store/ducks/history"
 import {Creators as CreatorsSearch, Types as TypesSearch} from "../store/ducks/search"
-import {fetchMeHistory, fetchMeMusicPlay, fetchMeMusicQueue, fetchMePlayer, fetchSearch} from "../services/endpoints"
+import {
+  fetchBackwardMusic,
+  fetchForwardMusic,
+  fetchMeHistory,
+  fetchMeMusicPlay,
+  fetchMeMusicQueue,
+  fetchMePlayer,
+  fetchPauseMusic,
+  fetchPlayMusic,
+  fetchSearch
+} from "../services/endpoints"
 
 import {toast} from "react-toastify";
 
@@ -17,7 +27,7 @@ const toastConfigDefault = {
 
 function* sagaFetchPlayer() {
   const response = yield call(fetchMePlayer)
-
+  console.log(response)
   if (response.status < 300) {
     yield put(CreatorsPlayer.fetchMusicSuccess(response.data))
   } else {
@@ -69,10 +79,46 @@ function* sagaFetchMeMusicPlay(action) {
 
 }
 
+function* sagaFetchPlayPauseMusic(action) {
+  const endPoint = !action.play_pause ? fetchPlayMusic : fetchPauseMusic
+  const response = yield call(endPoint, action)
+
+  if (response.status > 300) {
+    yield toast.error('Não foi possível reproduzir ou pausar a música', toastConfigDefault)
+  }
+
+}
+
+function* sagaFetchBackwardMusic(action) {
+  const response = yield call(fetchBackwardMusic, action)
+
+  if (response.status > 300) {
+    yield toast.error('Não foi possível processar sua requisição', toastConfigDefault)
+  }
+
+}
+
+function* sagaFetchForwardMusic(action) {
+  try {
+    const response = yield call(fetchForwardMusic, action)
+
+    if (response.status > 300) {
+      yield toast.error('Não foi possível processar sua requisição', toastConfigDefault)
+    }
+  } catch (e) {
+    yield toast.error('Não foi possível processar sua requisição', toastConfigDefault)
+  }
+}
+
 export default function* rootSaga() {
   return yield all([
     yield takeLatest(TypesPlayer.FETCH_MUSIC_SAGA, sagaFetchPlayer),
+    yield takeLatest(TypesPlayer.FETCH_PLAY_PAUSE_MUSIC_SAGA, sagaFetchPlayPauseMusic),
+    yield takeLatest(TypesPlayer.FETCH_STEP_BACKWARD_SAGA, sagaFetchBackwardMusic),
+    yield takeLatest(TypesPlayer.FETCH_STEP_FORWARD_SAGA, sagaFetchForwardMusic),
+
     yield takeLatest(TypesHistory.FETCH_HISTORY_SAGA, sagaFetchHistory),
+
     yield takeLatest(TypesSearch.FETCH_SEARCH_SAGA, sagaFetchSearch),
     yield takeLatest(TypesSearch.ADD_MUSIC_QUEUE, sagaFetchMeMusicQueue),
     yield takeLatest(TypesSearch.PLAY_MUSIC, sagaFetchMeMusicPlay),

@@ -5,15 +5,24 @@ export const {Types, Creators} = createActions({
   fetchMusicSaga: [],
   fetchMusicSuccess: ['music'],
   fetchMusicError: [],
+  fetchPlayPauseMusicSaga: ['play_pause', 'music'],
+  fetchStepBackwardSaga: [],
+  fetchStepForwardSaga: [],
 })
 
 const INITIAL_STATE = {
-  music: {}
+  music: {},
+  controls: {
+    isPlaying: false
+  }
 }
 
 const fetchSuccess = (state = INITIAL_STATE, action) => ({
   ...state,
-  music: action.music
+  music: action.music,
+  controls: {
+    isPlaying: action.music.is_playing,
+  }
 })
 
 export default createReducer(INITIAL_STATE, {

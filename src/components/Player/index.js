@@ -3,6 +3,7 @@ import styled from "styled-components"
 import ContentLoader from "react-content-loader"
 
 import ProgressBarPlayer from "./progress-bar";
+import Constrols from "../Controls";
 import {Creators as CreatorsPlayer} from "../../store/ducks/player";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -47,7 +48,7 @@ const Player = () => {
 
     useEffect(() => {
 
-        const IntervalFetch = setInterval(/*async*/ () => {
+        const IntervalFetch = setInterval(() => {
 
             dispatch(CreatorsPlayer.fetchMusicSaga())
 
@@ -72,6 +73,7 @@ const Player = () => {
                                 <Playing>
                                     {music.is_playing ? "Tocando agora!" : "Pausada"}
                                 </Playing>
+                                <Constrols/>
                                 <ProgressBarPlayer/>
                             </Data>
                         </>

@@ -24,3 +24,24 @@ export function fetchMeMusicPlay(data) {
     }
   })
 }
+
+export function fetchPauseMusic() {
+  return apiSpotify.put('/me/player/pause')
+}
+
+export function fetchPlayMusic(data) {
+  return apiSpotify.put('/me/player/play', {
+    uris: [
+      data.music.item.uri
+    ],
+    position_ms: data.music.progress_ms
+  })
+}
+
+export function fetchBackwardMusic() {
+  return apiSpotify.post('/me/player/previous')
+}
+
+export function fetchForwardMusic() {
+  return apiSpotify.post('/me/player/next')
+}
