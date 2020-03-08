@@ -1,4 +1,4 @@
-import {all, call, put, takeLatest} from "redux-saga/effects";
+import {all, call, delay, put, race, takeLatest} from "redux-saga/effects";
 import {
   fetchBackwardMusic,
   fetchForwardMusic,
@@ -24,87 +24,194 @@ const toastConfigDefault = {
   draggable: true,
 }
 
+const TIMEOUT = 20000;
+
 function* sagaFetchPlayer() {
-  const response = yield call(fetchMePlayer)
-  if (response.status < 300) {
-    yield put(CreatorsPlayer.fetchMusicSuccess(response.data))
-  } else {
-    yield put(CreatorsPlayer.fetchMusicError())
+  try {
+    const {response, timeout} = yield race({
+      response: call(fetchMePlayer),
+      timeout: delay(TIMEOUT)
+    });
+
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
+
+    if (response.status < 300) {
+      yield put(CreatorsPlayer.fetchMusicSuccess(response.data))
+    } else {
+      yield put(CreatorsPlayer.fetchMusicError())
+    }
+
+  } catch (e) {
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
   }
 }
 
 function* sagaFetchHistory() {
-  const response = yield call(fetchMeHistory)
+  try {
+    const {response, timeout} = yield race({
+      response: call(fetchMeHistory),
+      timeout: delay(TIMEOUT)
+    });
 
-  if (response.status < 300) {
-    yield put(CreatorsHistory.fetchHistorySuccess(response.data))
-  } else {
-    yield put(CreatorsHistory.fetchHistoryError())
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
+
+    if (response.status < 300) {
+      yield put(CreatorsHistory.fetchHistorySuccess(response.data))
+    } else {
+      yield put(CreatorsHistory.fetchHistoryError())
+    }
+
+  } catch (e) {
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
   }
 }
 
 function* sagaFetchSearch(action) {
-  const response = yield call(fetchSearch, action.search)
+  try {
+    const {response, timeout} = yield race({
+      response: call(fetchSearch, action.search),
+      timeout: delay(TIMEOUT)
+    });
 
-  if (response.status < 300) {
-    yield put(CreatorsSearch.showResult(true))
-    yield put(CreatorsSearch.fetchSearchSuccess(response.data.tracks.items))
-  } else {
-    yield put(CreatorsSearch.fetchSearchError())
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
+
+    if (response.status < 300) {
+      yield put(CreatorsSearch.showResult(true));
+      yield put(CreatorsSearch.fetchSearchSuccess(response.data.tracks.items))
+    } else {
+      yield put(CreatorsSearch.fetchSearchError())
+    }
+
+  } catch (e) {
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
   }
 }
 
 function* sagaFetchMeMusicQueue(action) {
-  const response = yield call(fetchMeMusicQueue, action.uri)
+  try {
+    const {response, timeout} = yield race({
+      response: call(fetchMeMusicQueue, action.uri),
+      timeout: delay(TIMEOUT)
+    });
 
-  if (response.status < 300) {
-    yield toast.success('Música adicionada a sua fila de reprodução', toastConfigDefault)
-  } else {
-    yield toast.error('Não foi possível adicionar a música', toastConfigDefault)
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
+
+    if (response.status < 300) {
+      yield toast.success('Música adicionada a sua fila de reprodução', toastConfigDefault)
+    } else {
+      yield toast.error('Não foi possível adicionar a música', toastConfigDefault)
+    }
+
+  } catch (e) {
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
   }
-
 }
 
 function* sagaFetchMeMusicPlay(action) {
+  try {
+    const {response, timeout} = yield race({
+      response: call(fetchMeMusicPlay, action),
+      timeout: delay(TIMEOUT)
+    });
 
-  const response = yield call(fetchMeMusicPlay, action)
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
 
-  if (response.status < 300) {
-    yield  toast.success('Reproduzindo a música', toastConfigDefault)
-  } else {
-    yield toast.error('Não foi possível reproduzir a música', toastConfigDefault)
+    if (response.status < 300) {
+      yield  toast.success('Reproduzindo a música', toastConfigDefault)
+    } else {
+      yield toast.error('Não foi possível reproduzir a música', toastConfigDefault)
+    }
+
+  } catch (e) {
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
   }
-
 }
 
 function* sagaFetchPlayPauseMusic(action) {
-  const endPoint = !action.play_pause ? fetchPlayMusic : fetchPauseMusic
-  const response = yield call(endPoint, action)
+  try {
+    const endPoint = !action.play_pause ? fetchPlayMusic : fetchPauseMusic;
+    const {response, timeout} = yield race({
+      response: call(endPoint, action),
+      timeout: delay(TIMEOUT)
+    });
 
-  if (response.status > 300) {
-    yield toast.error('Não foi possível reproduzir ou pausar a música', toastConfigDefault)
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
+
+    if (response.status > 300) {
+      yield toast.error('Não foi possível reproduzir ou pausar a música', toastConfigDefault)
+    }
+
+  } catch (e) {
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
   }
-
 }
 
 function* sagaFetchBackwardMusic(action) {
-  const response = yield call(fetchBackwardMusic, action)
-
-  if (response.status > 300) {
-    yield toast.error('Não foi possível processar sua requisição', toastConfigDefault)
-  }
-
-}
-
-function* sagaFetchForwardMusic(action) {
   try {
-    const response = yield call(fetchForwardMusic, action)
+    const {response, timeout} = yield race({
+      response: call(fetchBackwardMusic, action),
+      timeout: delay(TIMEOUT)
+    });
+
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
 
     if (response.status > 300) {
       yield toast.error('Não foi possível processar sua requisição', toastConfigDefault)
     }
+
   } catch (e) {
-    yield toast.error('Não foi possível processar sua requisição', toastConfigDefault)
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
+  }
+}
+
+function* sagaFetchForwardMusic(action) {
+  try {
+
+    const {response, timeout} = yield race({
+      response: call(fetchForwardMusic, action),
+      timeout: delay(TIMEOUT)
+    });
+
+    if (timeout) {
+      yield toast.error('Não foi possível carregar as informações do Spotify', toastConfigDefault);
+      return;
+    }
+
+    if (response.status > 300) {
+      yield toast.error('Não foi possível processar sua requisição', toastConfigDefault)
+    }
+
+  } catch (e) {
+    yield toast.error('Ocorreu um erro ao carregar os dados do Spotify', toastConfigDefault);
+    yield console.log(e)
   }
 }
 
