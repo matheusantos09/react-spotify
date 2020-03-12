@@ -1,11 +1,12 @@
 import apiSpotify from "./api";
+import {limitResult} from "./constants";
 
 export function fetchMePlayer() {
   return apiSpotify.get('/me/player')
 }
 
 export function fetchMeHistory() {
-  return apiSpotify.get('/me/player/recently-played?limit=10')
+  return apiSpotify.get(`/me/player/recently-played?limit=${limitResult.history}`)
 }
 
 export function fetchSearch(searchWord) {
