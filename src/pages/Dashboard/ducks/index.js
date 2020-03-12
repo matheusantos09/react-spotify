@@ -215,6 +215,10 @@ function* sagaFetchForwardMusic(action) {
   }
 }
 
+function* sagaSearchHistory(action) {
+  yield put(CreatorsHistory.historySearch(action.search))
+}
+
 export default function* rootSaga() {
   return yield all([
     yield takeLatest(TypesPlayer.FETCH_MUSIC_SAGA, sagaFetchPlayer),
@@ -223,6 +227,7 @@ export default function* rootSaga() {
     yield takeLatest(TypesPlayer.FETCH_STEP_FORWARD_SAGA, sagaFetchForwardMusic),
 
     yield takeLatest(TypesHistory.FETCH_HISTORY_SAGA, sagaFetchHistory),
+    yield takeLatest(TypesHistory.HISTORY_SEARCH_SAGA, sagaSearchHistory),
 
     yield takeLatest(TypesSearch.FETCH_SEARCH_SAGA, sagaFetchSearch),
     yield takeLatest(TypesSearch.ADD_MUSIC_QUEUE, sagaFetchMeMusicQueue),
