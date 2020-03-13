@@ -14,7 +14,6 @@ import {Creators as CreatorsPlayer, Types as TypesPlayer} from "./player";
 import {Creators as CreatorsHistory, Types as TypesHistory} from "./history";
 import {Creators as CreatorsSearch, Types as TypesSearch} from "./search";
 import {toast} from "react-toastify";
-import {getToken} from "../../../services/auth";
 
 const toastConfigDefault = {
   position: "bottom-right",
