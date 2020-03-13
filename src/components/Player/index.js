@@ -56,6 +56,7 @@ const Player = () => {
 
         return () => clearTimeout(IntervalFetch);
 
+        // eslint-disable-next-line
     }, []);
 
     return (

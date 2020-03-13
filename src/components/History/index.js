@@ -40,6 +40,7 @@ const History = () => {
 
     dispatch(CreatorsHistory.fetchHistorySaga())
 
+  // eslint-disable-next-line
   }, []);
 
   const handleSearch = useCallback((e) => {
@@ -54,6 +55,8 @@ const History = () => {
     }
 
     dispatch(CreatorsHistory.historySearchSaga(value))
+
+    // eslint-disable-next-line
   }, [search])
 
   return (
