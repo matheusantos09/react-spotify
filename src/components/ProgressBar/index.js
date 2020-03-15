@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import PropType from 'prop-types'
 import {Creators as CreatorsHistory} from "../../pages/Dashboard/ducks/history";
 
+import ProgressTime from "./ProgressTime";
+
 const ProgressBarWrapper = styled.div`
   border: 1px solid #252525;
   height: 10px;
@@ -21,13 +23,28 @@ const ProgressBar = styled.div`
       border-radius: 40px;
 `
 
-const ProgressBarPlayer = () => {
+const ProgressBarPlayer = (
+  {
+    value,
+    duration,
+    showTime
+  }
+) => {
 
   const dispatch = useDispatch();
 
-  const music = useSelector(
+  let music = useSelector(
     state => state.player.music
   )
+
+  if (typeof value !== 'undefined' && typeof duration !== 'undefined') {
+    music = {
+      progress_ms: value,
+      item: {
+        duration_ms: duration
+      }
+    }
+  }
 
   const progressValue = Math.round((music.progress_ms * 100 / (music.item.duration_ms || 1)));
 
@@ -36,18 +53,26 @@ const ProgressBarPlayer = () => {
   }
 
   return (
-    <ProgressBarWrapper>
-      <ProgressBar width={progressValue} />
-    </ProgressBarWrapper>
+    <>
+      <ProgressBarWrapper>
+        <ProgressBar width={progressValue} />
+      </ProgressBarWrapper>
+
+      {showTime && <ProgressTime current={music.progress_ms} max={music.item.duration_ms} />}
+    </>
   )
 }
 
 ProgressBarPlayer.defaultProps = {
-  value: 0
+  // value: 0,
+  // duration: 0,
+  showTime: false
 }
 
-ProgressBar.PropType = {
-  value: PropType.number
+ProgressBarPlayer.PropType = {
+  // value: PropType.number,
+  // duration: PropType.number,
+  showTime: PropType.bool
 }
 
 export default ProgressBarPlayer

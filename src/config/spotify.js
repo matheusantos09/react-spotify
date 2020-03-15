@@ -14,4 +14,4 @@ export const scopesParametersUri = scopes.join(
   "%20"
 )
 
-export const SPEED_REQUEST_MUSIC = 500
+export const SPEED_REQUEST_MUSIC = 1000

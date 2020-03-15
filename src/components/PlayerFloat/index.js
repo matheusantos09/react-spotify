@@ -1,4 +1,4 @@
-import React, {useState, memo} from 'react'
+import React, {memo, useState} from 'react'
 import {useScrollPosition} from "@n8tb1t/use-scroll-position"
 import styled from "styled-components"
 
@@ -67,7 +67,7 @@ const PlayerFloat = () => {
   }, [music, showOnScroll])
 
   return <ContainerFloat show={showOnScroll}>
-    {showOnScroll && <Container>
+    {(typeof music.item !== 'undefined' && showOnScroll) && <Container>
       <Image src={music.item.album.images[2].url} alt={music.item.name} />
 
       <InfoBlocks>

@@ -46,3 +46,7 @@ export function fetchBackwardMusic() {
 export function fetchForwardMusic() {
   return apiSpotify.post('/me/player/next')
 }
+
+export function fetchMusicById(id) {
+  return apiSpotify.get('/tracks/' + id)
+}

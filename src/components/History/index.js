@@ -45,8 +45,6 @@ const History = () => {
 
   const handleSearch = useCallback((e) => {
 
-    console.log('useCallback');
-
     const value = e.target.value;
     setSearch(value)
 

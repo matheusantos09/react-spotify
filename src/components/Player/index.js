@@ -59,16 +59,16 @@ const Player = () => {
   }, []);
 
   const LinkImage = useMemo(() => (
-    (music.item) &&
+    (typeof music.item !== 'undefined') &&
     <Link to={/music/ + music.item.uri}>
       <Image src={music.item.album.images[0].url} alt={music.item.name} />
     </Link>
 
     //eslint-disable-next-line
-  ), [music.item.uri])
+  ), [typeof music.item !== 'undefined' && music.item.uri])
 
   const MusicArtistAndPlayingControls = useMemo(() => (
-    (music.item) &&
+    (typeof music.item !== 'undefined') &&
     <>
       <MusicArtist>
         {music.item.name} - {music.item.artists[0].name}
@@ -82,12 +82,16 @@ const Player = () => {
     </>
 
     //eslint-disable-next-line
-  ), [music.item.name, music.item.artists, music.is_playing])
+  ), [
+    typeof music.item !== 'undefined' && music.item.name,
+    typeof music.item !== 'undefined' && music.item.artists,
+    typeof music.item !== 'undefined' && music.is_playing
+  ])
 
   return (
     <Container>
       {
-        music.item
+        typeof music.item !== 'undefined'
           ? (
             <>
               {LinkImage}

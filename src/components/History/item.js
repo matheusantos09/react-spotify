@@ -1,16 +1,22 @@
 import React, {memo} from "react"
 import styled from "styled-components";
 import {format, utcToZonedTime} from 'date-fns-tz'
+import {Link} from 'react-router-dom'
 
 const Item = styled.li`
   display: flex;
   border-bottom: 1px solid #252525;
   padding: 20px 0;
 
-    h2{
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
+  h2{
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+    
+  a{
+   color: #FFF;
+   text-decoration: unset;
+  }
 `
 
 const BoxImage = styled.div`
@@ -44,14 +50,18 @@ const ItemList = ({item}) => {
 
   return (
     <Item>
-      <BoxImage>
-        <img
-          src={item.track.album.images[0].url}
-          alt=""
-        />
-      </BoxImage>
+      <Link to={'/music/' + item.track.uri}>
+        <BoxImage>
+          <img
+            src={item.track.album.images[0].url}
+            alt=""
+          />
+        </BoxImage>
+      </Link>
       <ItemData>
-        <h2>{item.track.name} - {item.track.artists[0].name}</h2>
+        <Link to={'/music/' + item.track.uri}>
+          <h2>{item.track.name} - {item.track.artists[0].name}</h2>
+        </Link>
         <ItemTime>
           <strong>Tocada em: </strong>
           {handleDate(item.played_at)}
