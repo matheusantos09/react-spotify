@@ -4,7 +4,6 @@ import styled from "styled-components"
 
 import ProgressBarPlayer from "../ProgressBar";
 import {useSelector} from "react-redux";
-import isEmpty from "../../helpers/isEmpty";
 
 const TOP_VALUE_HIDDEN = -400
 
