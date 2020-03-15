@@ -1,4 +1,4 @@
-import React from "react"
+import React, {memo} from "react"
 import styled from "styled-components"
 import {FaSearch} from "react-icons/fa"
 import {toast} from 'react-toastify';
@@ -89,4 +89,4 @@ const Search = () => {
   )
 }
 
-export default Search
+export default memo(Search)

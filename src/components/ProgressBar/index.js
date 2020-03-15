@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {useDispatch, useSelector} from 'react-redux'
 
 import PropType from 'prop-types'
-import isEmpty from "../../helpers/isEmpty";
 import {Creators as CreatorsHistory} from "../../pages/Dashboard/ducks/history";
 
 const ProgressBarWrapper = styled.div`
@@ -24,18 +23,13 @@ const ProgressBar = styled.div`
 
 const ProgressBarPlayer = () => {
 
-  let progressBarStyles = 0;
   const dispatch = useDispatch();
 
   const music = useSelector(
     state => state.player.music
   )
 
-  if (!isEmpty(music) && music.item) {
-    progressBarStyles = (music.progress_ms * 100 / music.item.duration_ms)
-  }
-
-  let progressValue = Math.round(progressBarStyles);
+  const progressValue = Math.round((music.progress_ms * 100 / (music.item.duration_ms || 1)));
 
   if (progressValue === 2) {
     dispatch(CreatorsHistory.fetchHistorySaga())

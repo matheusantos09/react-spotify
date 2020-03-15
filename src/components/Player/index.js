@@ -1,13 +1,12 @@
-import React, {useEffect} from "react"
+import React, {memo, useEffect, useMemo} from "react"
 import styled from "styled-components"
 import ContentLoader from "react-content-loader"
+import {Link} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux"
 
 import ProgressBarPlayer from "../ProgressBar";
-import Constrols from "../Controls";
+import Controls from "../Controls";
 import {Creators as CreatorsPlayer} from "../../pages/Dashboard/ducks/player";
-import {useDispatch, useSelector} from "react-redux";
-
-import isEmpty from "../../helpers/isEmpty";
 import {SPEED_REQUEST_MUSIC} from "../../config/spotify";
 
 const Container = styled.div`
@@ -41,62 +40,83 @@ const Image = styled.img`
 
 const Player = () => {
 
-    const dispatch = useDispatch();
-    const music = useSelector(
-        state => state.player.music
-    )
+  const dispatch = useDispatch();
+  const music = useSelector(
+    state => state.player.music
+  )
 
-    useEffect(() => {
+  useEffect(() => {
 
-        const IntervalFetch = setInterval(() => {
+    const IntervalFetch = setInterval(() => {
 
-            dispatch(CreatorsPlayer.fetchMusicSaga())
+      dispatch(CreatorsPlayer.fetchMusicSaga())
 
-        }, SPEED_REQUEST_MUSIC);
+    }, SPEED_REQUEST_MUSIC);
 
-        return () => clearTimeout(IntervalFetch);
+    return () => clearTimeout(IntervalFetch);
 
-        // eslint-disable-next-line
-    }, []);
+    // eslint-disable-next-line
+  }, []);
 
-    return (
-        <Container>
-            {
-                !isEmpty(music) && music.item
-                    ? (
-                        <>
-                            <Image src={music.item.album.images[0].url} alt={music.item.name}/>
+  const LinkImage = useMemo(() => (
+    (music.item) &&
+    <Link to={/music/ + music.item.uri}>
+      <Image src={music.item.album.images[0].url} alt={music.item.name} />
+    </Link>
 
-                            <Data>
-                                <MusicArtist>
-                                    {music.item.name} - {music.item.artists[0].name}
-                                </MusicArtist>
-                                <Playing>
-                                    {music.is_playing ? "Tocando agora!" : "Pausada"}
-                                </Playing>
-                                <Constrols/>
-                                <ProgressBarPlayer/>
-                            </Data>
-                        </>
-                    )
-                    : (
-                        <ContentLoader
-                            speed={2}
-                            width={600}
-                            height={160}
-                            viewBox="0 0 600 160"
-                            backgroundColor="#e8e9ff"
-                            foregroundColor="#1DB954"
-                        >
-                            <rect x="173" y="12" rx="3" ry="3" width="410" height="6"/>
-                            <rect x="177" y="33" rx="3" ry="3" width="380" height="6"/>
-                            <rect x="177" y="53" rx="3" ry="3" width="178" height="6"/>
-                            <rect x="2" y="1" rx="0" ry="0" width="160" height="154"/>
-                        </ContentLoader>
-                    )
-            }
-        </Container>
-    )
+    //eslint-disable-next-line
+  ), [music.item.uri])
+
+  const MusicArtistAndPlayingControls = useMemo(() => (
+    (music.item) &&
+    <>
+      <MusicArtist>
+        {music.item.name} - {music.item.artists[0].name}
+      </MusicArtist>
+
+      <Playing>
+        {music.is_playing ? "Tocando agora!" : "Pausada"}
+      </Playing>
+
+      <Controls />
+    </>
+
+    //eslint-disable-next-line
+  ), [music.item.name, music.item.artists, music.is_playing])
+
+  return (
+    <Container>
+      {
+        music.item
+          ? (
+            <>
+              {LinkImage}
+
+              <Data>
+                {MusicArtistAndPlayingControls}
+
+                <ProgressBarPlayer />
+              </Data>
+            </>
+          )
+          : (
+            <ContentLoader
+              speed={2}
+              width={600}
+              height={160}
+              viewBox="0 0 600 160"
+              backgroundColor="#e8e9ff"
+              foregroundColor="#1DB954"
+            >
+              <rect x="173" y="12" rx="3" ry="3" width="410" height="6" />
+              <rect x="177" y="33" rx="3" ry="3" width="380" height="6" />
+              <rect x="177" y="53" rx="3" ry="3" width="178" height="6" />
+              <rect x="2" y="1" rx="0" ry="0" width="160" height="154" />
+            </ContentLoader>
+          )
+      }
+    </Container>
+  )
 }
 
-export default Player
+export default memo(Player)

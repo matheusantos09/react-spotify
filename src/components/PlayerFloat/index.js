@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, memo} from 'react'
 import {useScrollPosition} from "@n8tb1t/use-scroll-position"
 import styled from "styled-components"
 
@@ -43,6 +43,10 @@ const Image = styled.img`
 
 const MusicName = styled.div`
 margin-bottom: 30px;
+
+  strong{
+    margin-left: 20px;
+  }
 `
 
 const InfoBlocks = styled.div`
@@ -60,14 +64,19 @@ const PlayerFloat = () => {
 
   useScrollPosition(({_, currPos}) => {
     const isShow = currPos.y <= TOP_VALUE_HIDDEN
-    if (!isEmpty(music) && (isShow !== showOnScroll)) setShowOnScroll(isShow)
+    if (isShow !== showOnScroll) setShowOnScroll(isShow)
   }, [music, showOnScroll])
 
   return <ContainerFloat show={showOnScroll}>
     {showOnScroll && <Container>
       <Image src={music.item.album.images[2].url} alt={music.item.name} />
+
       <InfoBlocks>
-        <MusicName>{music.item.name} - {music.item.artists[0].name} <strong>{music.is_playing ? "Tocando agora!" : "Pausada"}</strong></MusicName>
+
+        <MusicName>{music.item.name} - {music.item.artists[0].name}
+          <strong>{music.is_playing ? "Tocando agora!" : "Pausada"}</strong>
+        </MusicName>
+
         <ProgressBarPlayer />
       </InfoBlocks>
     </Container>}
@@ -75,4 +84,4 @@ const PlayerFloat = () => {
 
 }
 
-export default PlayerFloat
+export default memo(PlayerFloat)

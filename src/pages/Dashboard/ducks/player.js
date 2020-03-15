@@ -11,7 +11,33 @@ export const {Types, Creators} = createActions({
 })
 
 const INITIAL_STATE = {
-  music: {},
+  music: {
+    uri: '',
+    progress_ms: 0,
+    item: {
+      duration_ms: 0,
+      name: '',
+      album: {
+        images: [
+          {
+            url: ''
+          },
+          {
+            url: ''
+          },
+          {
+            url: ''
+          }
+        ]
+      },
+      artists: [
+        {
+          name: ''
+        }
+      ],
+    },
+    is_playing: false
+  },
   controls: {
     isPlaying: false
   }

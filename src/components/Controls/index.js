@@ -1,4 +1,4 @@
-import React from "react"
+import React, {memo, useCallback} from "react"
 import {FaPause, FaPlay, FaStepBackward, FaStepForward} from "react-icons/fa";
 
 import styled from "styled-components"
@@ -41,23 +41,27 @@ const Constrols = () => {
     ButtonIconPlay = FaPause
   }
 
-  const handlePlay = () => dispatch(CreatorsPlayer.fetchPlayPauseMusicSaga(play, music))
+  const handlePlay = useCallback(() => {
+    dispatch(CreatorsPlayer.fetchPlayPauseMusicSaga(play, music))
+  }, [play, music, dispatch])
 
-  const handleStepBackward = () => dispatch(CreatorsPlayer.fetchStepBackwardSaga())
+  const handleStepBackward = useCallback(() => {
+    dispatch(CreatorsPlayer.fetchStepBackwardSaga())
+  }, [dispatch])
 
-  const handleStepForward = () => dispatch(CreatorsPlayer.fetchStepForwardSaga())
+  const handleStepForward = useCallback(() => {
+    dispatch(CreatorsPlayer.fetchStepForwardSaga())
+  }, [dispatch])
 
   return <Container>
-
-    <FaStepBackward onClick={handleStepBackward}/>
+    <FaStepBackward onClick={handleStepBackward} />
 
     <ContainerButton>
-      <ButtonIconPlay size={20} onClick={handlePlay}/>
+      <ButtonIconPlay size={20} onClick={handlePlay} />
     </ContainerButton>
 
-    <FaStepForward onClick={handleStepForward}/>
-
+    <FaStepForward onClick={handleStepForward} />
   </Container>
 }
 
-export default Constrols
+export default memo(Constrols)

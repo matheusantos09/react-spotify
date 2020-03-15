@@ -151,6 +151,7 @@ function* sagaFetchMeMusicPlay(action) {
 
 function* sagaFetchPlayPauseMusic(action) {
   try {
+    //@TODO Melhorar otimizacao de dados que sao enviados atraves do actions para nao enviar todos os dados da musica apenas o que for usar
     const endPoint = !action.play_pause ? fetchPlayMusic : fetchPauseMusic;
     const {response, timeout} = yield race({
       response: call(endPoint, action),

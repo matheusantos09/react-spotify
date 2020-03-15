@@ -4,6 +4,7 @@ import Panel from "./pages/Panel";
 import {isAuthenticated, setToken} from "./services/auth";
 import {accessTokenSpotify} from "./helpers/accessTokenSpotify";
 import Login from "./pages/Login";
+import MusicDetails from "./pages/MusicDetails";
 
 const setTokenReceived = () => {
 
@@ -38,6 +39,7 @@ const Routes = () => (
   <Router>
     <Route path="/redirect" exact component={setTokenReceived} />
     <PrivateRoute path="/painel" exact component={Panel} />
+    <PrivateRoute path="/music/:spotifyId" exact component={MusicDetails} />
     <Route path="/" exact component={Login} />
   </Router>
 )
